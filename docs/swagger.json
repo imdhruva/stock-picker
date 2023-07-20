@@ -1,0 +1,85 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "API to retrieve closing prices of a specific stock",
+        "title": "Stock Service API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/stock": {
+            "get": {
+                "description": "Get the last NDAYS days of data along with the average closing price",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get stock data",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Stock symbol",
+                        "name": "symbol",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Number of days",
+                        "name": "nDays",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/main.StockData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/main.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/main.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "main.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "main.StockData": {
+            "type": "object",
+            "properties": {
+                "average": {
+                    "type": "number"
+                },
+                "days": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "number"
+                    }
+                }
+            }
+        }
+    }
+}

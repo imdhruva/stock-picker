@@ -1,0 +1,57 @@
+basePath: /
+definitions:
+  main.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  main.StockData:
+    properties:
+      average:
+        type: number
+      days:
+        additionalProperties:
+          type: number
+        type: object
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: API to retrieve closing prices of a specific stock
+  title: Stock Service API
+  version: "1.0"
+paths:
+  /stock:
+    get:
+      consumes:
+      - application/json
+      description: Get the last NDAYS days of data along with the average closing
+        price
+      parameters:
+      - description: Stock symbol
+        in: query
+        name: symbol
+        required: true
+        type: string
+      - description: Number of days
+        in: query
+        name: nDays
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.StockData'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+      summary: Get stock data
+swagger: "2.0"
